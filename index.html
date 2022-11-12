@@ -77,11 +77,14 @@
             $(`<div class="col-3" id="news-container-right-${i}" style=background-color:purple; />`).appendTo(`#news-container-${i}`);
             $(`<a href="${articleContent[1]}" />`).text(articleContent[0]).appendTo(`#news-container-left-${i}`);       
             // Video author returns 0, so has to be replaced with something else
-            if (articleContent[9] == 0) {
-                articleContent[9] = 'Niet bekend';
-            }
+            var author = articleContent[articleContent.length-3-articleContent[articleContent.length-1]];
+            //$.inArray('0', articleContent) > -1 == true
+            console.log(articleContent.length-articleContent[articleContent.length-1]-3)
+            //if () {
+            //    author = 'Niet bekend';
+            //}
             // Capitalize the first letter, because some authors don't start with a capital
-            var author = capitalizeFirstLetter(articleContent[9])
+            author = capitalizeFirstLetter(author)
             // Create more HTML elements
             $(`<p class="news-container-author" />`).text(author).appendTo(`#news-container-left-${i}`);
             $(`<p class="news-container-text" />`).text(articleContent[2]).appendTo(`#news-container-left-${i}`);
