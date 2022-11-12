@@ -40,6 +40,7 @@ function testFunction(xml, articleNumber) {
         tempArticleArr.push(y[i].textContent);
     }
     }  
+    //console.log(y)
     tempArticleArr.push(amoundOfExtraLinks)
     //console.log(tempArticleArr);
     //console.log(amoundOfExtraLinks);
