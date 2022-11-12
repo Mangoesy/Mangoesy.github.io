@@ -1,0 +1,99 @@
+<!-- https://getbootstrap.com/docs/5.1/getting-started/introduction/ -->
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css"  />
+    <script src="./js/javascript.js"></script>
+    <title>Page Title</title>
+
+</head>
+<body>
+    <div> 
+        <!-- ---NAVBAR--- -->
+        <ul class="page-navbar">
+            <li><a href="homepage.html"><i class="fa fa-fw fa-home"></i>Home</a></li>
+            <li><a href="about.html"><i class="fa fa-fw fa-newspaper-o"></i>About</a></li>    
+            <li class="page-navbar-search"><a href="#"><i class="fa fa-fw fa-search"></i>Search</a></li>    
+            <li class="page-navbar-profile"><a href="#"><i class="fa fa-fw fa-user"></i>Profile</a></li>  
+        </ul>
+        <!-- ---/NAVBAR--- -->
+        <!-- ---FEED--- -->
+        <div class="row">
+            <div class="col-md-3 d-none d-md-block test">1</div>
+            <div class="col-sm-12 col-md-6 news-collumn">
+                <!-- New divs will be created with the js and put in here -->
+            </div>
+            <div class="col-md-3 d-none d-md-block test">3</div>
+        </div>
+        <!-- ---/FEED--- -->
+    </div>
+
+    <!-- ---LOADING SCREEN--- -->
+    <div class="loader-wrapper">
+        <div class="loader-container">
+            <div class="loader-icon2">
+                <hr class="loader-icon-stripes"></hr>
+                <hr class="loader-icon-stripes"></hr>
+                <hr class="loader-icon-stripes"></hr>
+                <hr class="loader-icon-stripes"></hr>
+                <hr class="loader-icon-stripes"></hr>
+                <hr class="loader-icon-stripes"></hr>
+            </div>
+            <div class="loader-icon">
+                <div>
+                <p class="loader-icon-header">NEWS</p>
+                <div class="loader-icon-image"></div>
+                <div class="loader-icon-stripes-container">
+                    <hr class="loader-icon-stripes"></hr>
+                    <hr class="loader-icon-stripes"></hr>
+                </div>
+                <hr class="loader-icon-stripes"></hr>
+                <hr class="loader-icon-stripes"></hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function loadArticles(xml) {
+        var xmlDoc = xml.responseXML;
+        var x = xmlDoc.getElementsByTagName("item");
+        // Loop for number of articles found in XML file
+        for (i = 0; i < x.length; i++) {
+            // Request items out of XML file
+            var articleContent = testFunction(xhr, i);
+            console.log(articleContent);
+            // Create HTML elements
+            $(`<div class="news-container row" id="news-container-${i}" />`).appendTo('.news-collumn');
+            $(`<div class="col-9" id="news-container-left-${i}" style=background-color:pink; />`).appendTo(`#news-container-${i}`);
+            $(`<div class="col-3" id="news-container-right-${i}" style=background-color:purple; />`).appendTo(`#news-container-${i}`);
+            $(`<a href="${articleContent[1]}" />`).text(articleContent[0]).appendTo(`#news-container-left-${i}`);       
+            // Video author returns 0, so has to be replaced with something else
+            if (articleContent[9] == 0) {
+                articleContent[9] = 'Niet bekend';
+            }
+            // Capitalize the first letter, because some authors don't start with a capital
+            var author = capitalizeFirstLetter(articleContent[9])
+            // Create more HTML elements
+            $(`<p class="news-container-author" />`).text(author).appendTo(`#news-container-left-${i}`);
+            $(`<p class="news-container-text" />`).text(articleContent[2]).appendTo(`#news-container-left-${i}`);
+            $(`<div style="float: left; margin-left: 8px; background-color:brown" id="news-container-badges-${i}" style=background-color:brown; />`).appendTo(`#news-container-${i}`);
+            // Loop for each catogory in array and place badge in div
+            for (ii = 0; ii < articleContent.length-articleContent[articleContent.length-1]-9; ii++) {
+                $(`<span class="badge rounded-pill bg-light text-dark" style="margin: 2px;"/>`).text(articleContent[ii+6]).appendTo(`#news-container-badges-${i}`);
+            }
+            $(`<img src="${articleContent[5]}" alt="image">`).appendTo(`#news-container-right-${i}`);
+        } 
+    }
+    
+    $( window ).on("load", function() {
+        $(".loader-wrapper").fadeOut("slow");
+    }); 
+</script>
